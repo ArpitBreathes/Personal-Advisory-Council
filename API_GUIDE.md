@@ -17,7 +17,7 @@
 
 3. **Copy Your API Key**
 
-   - Your API key will look like: `AIzaSyC_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+   - Your API key will be a long string starting with `AIzaSy...`
    - Click the copy icon to copy it
    - **Important**: Store it securely!
 
