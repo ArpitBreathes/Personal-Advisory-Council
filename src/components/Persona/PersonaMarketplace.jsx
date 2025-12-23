@@ -48,17 +48,24 @@ const PersonaMarketplace = () => {
   };
 
   const handleUpvote = async (personaId) => {
-    if (!user) return;
+    if (!user) {
+      alert("Please log in to upvote personas");
+      return;
+    }
 
     try {
+      console.log("Upvoting persona:", personaId);
       const success = await upvotePersona(personaId, user.uid);
       if (success) {
         setUpvotedPersonas(new Set([...upvotedPersonas, personaId]));
         // Reload to get updated counts
         await loadPersonas();
+      } else {
+        console.log("Already upvoted");
       }
     } catch (error) {
       console.error("Error upvoting persona:", error);
+      alert("Failed to upvote. Please try again.");
     }
   };
 

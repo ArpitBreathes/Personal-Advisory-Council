@@ -32,8 +32,14 @@ service cloud.firestore {
                       resource.data.userId == request.auth.uid);
       
       // Only owner can update or delete
-      allow update, delete: if isAuthenticated() && 
-                               resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid;
+      
+      // Allow updates by owner OR allow upvote count updates by anyone
+      allow update: if isAuthenticated() && 
+                       (resource.data.userId == request.auth.uid ||
+                        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes']) &&
+                         request.resource.data.upvotes == resource.data.upvotes + 1));
     }
     
     // Conversations collection
