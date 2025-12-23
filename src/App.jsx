@@ -16,6 +16,8 @@ import Marketplace from "./pages/Marketplace";
 import ChatInterface from "./components/Chat/ChatInterface";
 import LoadingSpinner from "./components/Common/LoadingSpinner";
 
+const basename = import.meta.env.VITE_BASE_PATH || '/';
+
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -56,7 +58,7 @@ const PublicRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
+    <Router basename={basename}>
       <AuthProvider>
         <div className="min-h-screen bg-gray-50">
           <Routes>
