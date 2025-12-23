@@ -95,17 +95,24 @@ const PersonaCard = ({
                 }
               }}
               style={{ pointerEvents: 'auto', zIndex: 10 }}
-              className={`ml-3 flex flex-col items-center rounded-lg px-3 py-2 transition-colors ${
+              className={`ml-3 flex flex-col items-center rounded-lg px-3 py-2 transition-all ${
                 isUpvoted
-                  ? "bg-blue-100"
+                  ? "bg-blue-600 shadow-md"
                   : isOwner
-                  ? "bg-gray-50 opacity-50"
-                  : "bg-blue-50 hover:bg-blue-100 cursor-pointer"
+                  ? "bg-gray-100 opacity-60 cursor-not-allowed"
+                  : "bg-blue-50 hover:bg-blue-100 cursor-pointer hover:shadow-sm"
               }`}
+              title={
+                isUpvoted
+                  ? "You already upvoted this"
+                  : isOwner
+                  ? "You can't upvote your own persona"
+                  : "Click to upvote"
+              }
             >
               <svg
                 className={`w-5 h-5 ${
-                  isUpvoted ? "text-blue-700" : "text-blue-600"
+                  isUpvoted ? "text-white" : "text-blue-600"
                 }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -114,11 +121,14 @@ const PersonaCard = ({
               </svg>
               <span
                 className={`text-sm font-semibold mt-1 ${
-                  isUpvoted ? "text-blue-700" : "text-blue-600"
+                  isUpvoted ? "text-white" : "text-blue-600"
                 }`}
               >
                 {persona.upvotes || 0}
               </span>
+              {isUpvoted && (
+                <span className="text-xs text-white opacity-90 mt-0.5">✓</span>
+              )}
             </button>
           )}
         </div>
