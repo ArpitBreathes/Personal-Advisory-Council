@@ -247,36 +247,27 @@ export const getMessages = async (conversationId) => {
  */
 export const upvotePersona = async (personaId, userId) => {
   try {
-    console.log("upvotePersona called:", { personaId, userId });
     const upvoteRef = doc(db, "personaUpvotes", `${userId}_${personaId}`);
     const upvoteDoc = await getDoc(upvoteRef);
 
     if (!upvoteDoc.exists()) {
-      console.log("Creating upvote record...");
-      // Add upvote
       await setDoc(upvoteRef, {
         userId,
         personaId,
         createdAt: serverTimestamp(),
       });
-      console.log("Upvote record created");
 
-      // Increment persona upvote count
-      console.log("Incrementing persona upvote count...");
       const personaRef = doc(db, "personas", personaId);
       await updateDoc(personaRef, {
         upvotes: increment(1),
       });
-      console.log("Persona upvote count incremented successfully");
 
       return true;
     }
 
-    console.log("Already upvoted this persona");
-    return false; // Already upvoted
+    return false;
   } catch (error) {
     console.error("Error upvoting persona:", error);
-    console.error("Error details:", error.message, error.code);
     throw error;
   }
 };

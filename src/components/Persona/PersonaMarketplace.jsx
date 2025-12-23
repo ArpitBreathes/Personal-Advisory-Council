@@ -1,22 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import {
-  getPublicPersonas,
-  upvotePersona,
-  hasUpvoted,
-} from "../../services/firestoreService";
+import { getPublicPersonas } from "../../services/firestoreService";
 import { createConversation } from "../../services/firestoreService";
 import PersonaCard from "./PersonaCard";
 import LoadingSpinner from "../Common/LoadingSpinner";
-import Button from "../Common/Button";
 
 const PersonaMarketplace = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [personas, setPersonas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [upvotedPersonas, setUpvotedPersonas] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -28,44 +22,10 @@ const PersonaMarketplace = () => {
       setLoading(true);
       const publicPersonas = await getPublicPersonas();
       setPersonas(publicPersonas);
-
-      // Check which personas user has upvoted
-      if (user) {
-        const upvotedIds = new Set();
-        await Promise.all(
-          publicPersonas.map(async (persona) => {
-            const voted = await hasUpvoted(persona.id, user.uid);
-            if (voted) upvotedIds.add(persona.id);
-          })
-        );
-        setUpvotedPersonas(upvotedIds);
-      }
     } catch (error) {
       console.error("Error loading personas:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleUpvote = async (personaId) => {
-    if (!user) {
-      alert("Please log in to upvote personas");
-      return;
-    }
-
-    try {
-      console.log("Upvoting persona:", personaId);
-      const success = await upvotePersona(personaId, user.uid);
-      if (success) {
-        setUpvotedPersonas(new Set([...upvotedPersonas, personaId]));
-        // Reload to get updated counts
-        await loadPersonas();
-      } else {
-        console.log("Already upvoted");
-      }
-    } catch (error) {
-      console.error("Error upvoting persona:", error);
-      alert("Failed to upvote. Please try again.");
     }
   };
 
@@ -157,9 +117,6 @@ const PersonaMarketplace = () => {
                 persona={persona}
                 onSelect={handleUsePersona}
                 showActions={false}
-                showUpvotes={true}
-                onUpvote={handleUpvote}
-                isUpvoted={upvotedPersonas.has(persona.id)}
               />
             ))}
           </div>
