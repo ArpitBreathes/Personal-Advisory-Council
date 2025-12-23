@@ -70,17 +70,25 @@ const PersonaCard = ({
           </div>
           {showUpvotes && (
             <button
+              type="button"
               onClick={() => {
+                console.log("Upvote button clicked", {
+                  personaId: persona.id,
+                  isOwner,
+                  isUpvoted,
+                  hasOnUpvote: !!onUpvote,
+                });
                 if (onUpvote && !isOwner && !isUpvoted) {
                   onUpvote(persona.id);
+                } else {
+                  console.log("Upvote blocked:", { isOwner, isUpvoted });
                 }
               }}
-              disabled={isUpvoted || isOwner}
               className={`ml-3 flex flex-col items-center rounded-lg px-3 py-2 transition-colors ${
                 isUpvoted
-                  ? "bg-blue-100 cursor-default"
+                  ? "bg-blue-100"
                   : isOwner
-                  ? "bg-gray-50 cursor-not-allowed"
+                  ? "bg-gray-50 opacity-50"
                   : "bg-blue-50 hover:bg-blue-100 cursor-pointer"
               }`}
             >
