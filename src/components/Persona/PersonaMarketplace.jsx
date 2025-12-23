@@ -145,24 +145,15 @@ const PersonaMarketplace = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPersonas.map((persona) => (
-              <div key={persona.id} className="relative">
-                <PersonaCard
-                  persona={persona}
-                  onSelect={handleUsePersona}
-                  showActions={false}
-                  showUpvotes={true}
-                />
-                {!upvotedPersonas.has(persona.id) &&
-                  persona.userId !== user?.uid && (
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleUpvote(persona.id)}
-                      className="absolute top-2 right-2 text-xs px-2 py-1"
-                    >
-                      👍 Upvote
-                    </Button>
-                  )}
-              </div>
+              <PersonaCard
+                key={persona.id}
+                persona={persona}
+                onSelect={handleUsePersona}
+                showActions={false}
+                showUpvotes={true}
+                onUpvote={handleUpvote}
+                isUpvoted={upvotedPersonas.has(persona.id)}
+              />
             ))}
           </div>
         </>
