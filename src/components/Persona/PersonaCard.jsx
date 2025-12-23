@@ -70,11 +70,11 @@ const PersonaCard = ({
           </div>
           {showUpvotes && (
             <button
-              onClick={
-                onUpvote && !isOwner && !isUpvoted
-                  ? () => onUpvote(persona.id)
-                  : undefined
-              }
+              onClick={() => {
+                if (onUpvote && !isOwner && !isUpvoted) {
+                  onUpvote(persona.id);
+                }
+              }}
               disabled={isUpvoted || isOwner}
               className={`ml-3 flex flex-col items-center rounded-lg px-3 py-2 transition-colors ${
                 isUpvoted
