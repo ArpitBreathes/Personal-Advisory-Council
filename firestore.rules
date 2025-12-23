@@ -31,15 +31,14 @@ service cloud.firestore {
                      (resource.data.isPublic == true || 
                       resource.data.userId == request.auth.uid);
       
-      // Only owner can update or delete
+      // Only owner can delete
       allow delete: if isAuthenticated() && 
                        resource.data.userId == request.auth.uid;
       
-      // Allow updates by owner OR allow upvote count updates by anyone
+      // Allow updates by owner OR allow upvote count updates by anyone (only upvotes field changed)
       allow update: if isAuthenticated() && 
                        (resource.data.userId == request.auth.uid ||
-                        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes']) &&
-                         request.resource.data.upvotes == resource.data.upvotes + 1));
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes']));
     }
     
     // Conversations collection
