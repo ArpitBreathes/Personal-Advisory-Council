@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:github": "VITE_BASE_PATH=/Personal-Advisory-Council/ vite build",
+    "build:firebase": "vite build",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "predeploy": "npm run build:github",
+    "deploy": "gh-pages -d dist",
+    "deploy:firebase": "npm run build:firebase && firebase deploy --only hosting"
   },
   "dependencies": {
     "firebase": "^10.14.1",
