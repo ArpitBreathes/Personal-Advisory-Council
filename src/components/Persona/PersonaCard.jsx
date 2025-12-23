@@ -71,19 +71,30 @@ const PersonaCard = ({
           {showUpvotes && (
             <button
               type="button"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
                 console.log("Upvote button clicked", {
                   personaId: persona.id,
+                  personaName: persona.name,
                   isOwner,
                   isUpvoted,
                   hasOnUpvote: !!onUpvote,
+                  userId: user?.uid,
+                  personaUserId: persona.userId,
                 });
                 if (onUpvote && !isOwner && !isUpvoted) {
+                  console.log("Calling onUpvote...");
                   onUpvote(persona.id);
                 } else {
-                  console.log("Upvote blocked:", { isOwner, isUpvoted });
+                  console.log("Upvote blocked - Reasons:", { 
+                    noHandler: !onUpvote,
+                    isOwner, 
+                    alreadyUpvoted: isUpvoted 
+                  });
                 }
               }}
+              style={{ pointerEvents: 'auto', zIndex: 10 }}
               className={`ml-3 flex flex-col items-center rounded-lg px-3 py-2 transition-colors ${
                 isUpvoted
                   ? "bg-blue-100"
