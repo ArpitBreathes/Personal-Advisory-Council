@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:github": "cross-env VITE_BASE_PATH=/Personal-Advisory-Council/ VITE_GEMINI_API_KEY=AIzaSyC_jDCtvN69pCLxBCd6ApcvbmD6QspjxwE vite build",
+    "build:github": "cross-env VITE_BASE_PATH=/Personal-Advisory-Council/ vite build",
     "build:firebase": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build:github",

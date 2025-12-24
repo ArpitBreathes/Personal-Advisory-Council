@@ -99,6 +99,30 @@ export const getPersonasByIds = async (personaIds) => {
   }
 };
 
+/**
+ * Add a persona to user's collection (clone from marketplace)
+ */
+export const addPersonaToMyCollection = async (userId, personaData) => {
+  try {
+    const personasRef = collection(db, "personas");
+    const docRef = await addDoc(personasRef, {
+      name: personaData.name,
+      description: personaData.description,
+      expertise: personaData.expertise,
+      communicationStyle: personaData.communicationStyle,
+      systemPrompt: personaData.systemPrompt,
+      isPublic: false, // Make it private by default when cloned
+      userId,
+      upvotes: 0,
+      createdAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding persona to collection:", error);
+    throw error;
+  }
+};
+
 // ========== CONVERSATIONS ==========
 
 /**

@@ -8,6 +8,7 @@ const PersonaCard = ({
   onSelect,
   onDelete,
   showActions = true,
+  additionalAction,
 }) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -139,14 +140,17 @@ const PersonaCard = ({
           )}
 
           {onSelect && !showActions && (
-            <Button
-              variant="outline"
-              onClick={handleSelect}
-              disabled={loading}
-              className="text-xs px-3 py-1"
-            >
-              Select
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleSelect}
+                disabled={loading}
+                className="text-xs px-3 py-1"
+              >
+                Select
+              </Button>
+              {additionalAction && additionalAction}
+            </div>
           )}
         </div>
       </div>

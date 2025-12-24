@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { getPublicPersonas } from "../../services/firestoreService";
+import { getPublicPersonas, addPersonaToMyCollection } from "../../services/firestoreService";
 import { createConversation } from "../../services/firestoreService";
 import PersonaCard from "./PersonaCard";
 import LoadingSpinner from "../Common/LoadingSpinner";
+import Button from "../Common/Button";
 
 const PersonaMarketplace = () => {
   const { user } = useAuth();
@@ -40,6 +41,16 @@ const PersonaMarketplace = () => {
     } catch (error) {
       console.error("Error creating conversation:", error);
       alert("Failed to start conversation");
+    }
+  };
+
+  const handleAddToMyPersonas = async (persona) => {
+    try {
+      await addPersonaToMyCollection(user.uid, persona);
+      alert(`${persona.name} has been added to your personas!`);
+    } catch (error) {
+      console.error("Error adding persona:", error);
+      alert("Failed to add persona to your collection");
     }
   };
 
@@ -117,6 +128,29 @@ const PersonaMarketplace = () => {
                 persona={persona}
                 onSelect={handleUsePersona}
                 showActions={false}
+                additionalAction={
+                  <Button
+                    onClick={() => handleAddToMyPersonas(persona)}
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs px-3 py-1"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    Add
+                  </Button>
+                }
               />
             ))}
           </div>
